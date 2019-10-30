@@ -17,23 +17,23 @@ const BalanceSchema = new mongoose.Schema({
 
   // 银行卡余额
   cardBalance: {
-    type: Number,
+    type: String,
     default: 0
   },
   // 支付宝余额
   zfbBalance: {
-    type: Number,
+    type: String,
     default: 0
   },
 
   // 微信余额
   wxBalance: {
-    type: Number,
+    type: String,
     default: 0
   },
   // 现金余额
   cashBalance: {
-    type: Number,
+    type: String,
     default: 0
   },
 

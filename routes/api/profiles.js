@@ -22,15 +22,40 @@ router.get('/test', (req, res, next) => {
  *  @access private
  */
 router.post(
-  '/initialize/:username',
+  '/initialize',
   passport.authenticate("jwt", {session: false}),
   async (req, res, next) => {
-    if (req.user.username !== req.params.username) {
-     return await res.json({msg: '安全验证失败,请重新登录', success: false});
-    }
+   
     const { body } = req;
+    
     body.username = req.user.username;
+
+    // 如果已经添加过初始数据，先删除之前的
+    const data = await Balance.findOneAndRemove({username: body.username}).catch(err=> next(err));
+    
     const initializeMoney = await new Balance(body).save().catch(err => next(err));
+    
+    await res.json({
+      initializeMoney,
+      success: true
+    })
+
+})
+
+/**
+ * $route GET api/profiles/initialize/
+ *  @description 获取初始资金接口
+ *  @access private
+ */
+
+router.get(
+  '/initialize',
+  passport.authenticate("jwt", {session: false}),
+  async (req, res, next) => {
+ 
+    const {username} = req.user;
+    const initializeMoney = await Balance.findOne({username}).catch(err => next(err));
+    
     await res.json({
       initializeMoney,
       success: true
@@ -67,12 +92,10 @@ router.get(
  * @要求：前端表单中的数据严格按照指定的name提交
  */
 router.post(
-  '/add/:username',
+  '/add',
   passport.authenticate("jwt", {session: false}),
   async (req, res, next) => {
-    if (req.user.username !== req.params.username) {
-      return await res.json({msg: '安全验证失败,请重新登录', success: false});
-     }
+    
 
     const { body } = req;
     body.username = req.user.username;
@@ -91,7 +114,7 @@ router.post(
     // const balance = await Balance.findOne({username: req.user.username})
     // .catch(err => next(err));
 
-    // balance[Mapkey] = model.includes('支出') ? balance[Mapkey] - moneynum : balance[Mapkey] + moneynum;
+    // balance[Mapkey] = model.includes('支出') ? parseInt(balance[Mapkey]) - parseInt(moneynum) : parseInt(balance[Mapkey]) + parseInt(moneynum);
     
     // await balance.save().catch(err => next(err));
 
@@ -115,9 +138,7 @@ router.delete(
   '/remove/:id',
   passport.authenticate("jwt", {session: false}),
   async (req, res, next) => {
-    if (req.user.username !== req.params.username) {
-      return await res.json({msg: '安全验证失败,请重新登录', success: false});
-     }
+   
     const { id } = req.params;
     
     await ProFile.findByIdAndRemove(id)

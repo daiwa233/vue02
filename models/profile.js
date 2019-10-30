@@ -36,6 +36,9 @@ const ProFileSchema = new mongoose.Schema({
   date: {
     type: Date,
     default: Date.now
+  },
+  remark: {
+    type: String
   }
 
 })

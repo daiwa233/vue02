@@ -4,6 +4,8 @@ const users = require('./routes/api/users');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const proFiles = require('./routes/api/profiles');
+const session = require('express-session');
+const { sessionkey } = require('./config/keys');
 const PORT = 5000;
 
 //配置body-parse中间件
@@ -18,6 +20,13 @@ app.use("/public", express.static('public'));
 app.use(passport.initialize());
 require('./config/passport')(passport);//引入 passport 的配置项
 
+// 配置session
+app.use(session({
+  secret: sessionkey,
+  resave: false,
+  saveUninitialized: true,
+  cookie: { maxAge: 600000 }
+}))
 
 //配置路由中间件
 app.use("/api/users", users);
