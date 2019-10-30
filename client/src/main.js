@@ -18,9 +18,13 @@ Vue.filter('dateFormat', (date) => {
   
   const hours = new Date(date).getHours();
   
-  if (hours>6 && hours<= 12) {
+  if (hours>6 && hours<= 11) {
     return '早上好!';
-  }else if(hours>12 && hours<=18) {
+
+  }else if (hours > 11 && hours <= 14) {
+    return '中午好'
+  }
+  else if(hours>14 && hours<=18) {
     return '下午好!';
   } else if (hours>18 && hours<=22) {
     return '晚上好!';

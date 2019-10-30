@@ -64,6 +64,7 @@
 </template>
 
 <script>
+import jwt_decode from 'jwt-decode'
 export default {
   name: 'register',
   data () {
@@ -208,6 +209,7 @@ export default {
         
 
       }).catch(err => {
+        console.log(err)
         this.$message.error('出错了，请刷新试试');
       })
     },

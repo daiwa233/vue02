@@ -9,7 +9,7 @@
         <el-button type="primary" size="small" icon="el-icon-search" @click="onScreeoutMoney()">筛选</el-button>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" size="small" icon="el-icon-error" @click="clearScreeout()">清除筛选结果</el-button>
+        <el-button :disabled="screeflag" type="primary" size="small" icon="el-icon-error" @click="clearScreeout()">清除筛选结果</el-button>
       </el-form-item>
       <el-form-item class="btnRight">
         <el-button type="primary" size="small" icon="el-icon-circle-plus-outline" @click="onAddMoney()">添加</el-button>
@@ -100,13 +100,13 @@ export default {
   data() {
     return {
 
-      
+      screeflag: true,
 
       initialize: {
-        zfbBalance:'',
-        cardBalance:'',
-        wxBalance: '',
-        cashBalance:''
+        zfbBalance:'0',
+        cardBalance:'0',
+        wxBalance: '0',
+        cashBalance:'0'
       },
       initializedialog: {
          show: false,
@@ -246,11 +246,12 @@ export default {
     },
     //根据时间 筛选数据
     onScreeoutMoney() {
+      
       const {startTime, endTime} = this.search_data;
       if (startTime === '' || endTime === '') {
        return this.$message('请先选择开始时间和结束时间再进行筛选');
       }
-      
+      this.screeflag = false;
       const start = new Date(startTime).getTime();
       const end = new Date(endTime).getTime();
       
@@ -311,7 +312,7 @@ export default {
 
     // 清除筛选结果
     clearScreeout() {  
-
+      this.screeflag = true;
       this.fullData = this.filterData;
       this.search_data.startTime = this.search_data.endTime = '';
 
