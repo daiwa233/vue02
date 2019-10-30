@@ -1,10 +1,3 @@
-# api 
+## vue/cli4.0 + node 前后端分离资金管理系统
 
- ### jsonwebtoken 实现添加token
- ```cmd
- npm install jsonwebtoken
- ```
- ```javascript  
- const jwt = rquire('jsonwebtoken')
-  jwt.sign()
- ```
+
